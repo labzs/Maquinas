@@ -51,14 +51,21 @@ def fatorEncurtamento(delt, h):
     Retorna o fator de encurtamento para um encurtamento delta na harmônica h.
 
     '''
-    return abs(np.cos((delt/2)*(np.pi/180)))
+    theta = delt/2
+    theta = theta * (np.pi/180)
+    
+    return abs(np.cos(h*theta))
 
 def fatorDistribuicao(q, delt,h):
     '''
     Retorna o fator de Distribuição para uma distribuição de q por polo e fase e encurtamento del na harmônica h
     '''
+    theta = delt /2
+    theta = theta * (np.pi/180)
 
-    return abs((np.sin(q*h*(delt/2)*(np.pi/180))) / (q*np.sin(h*(delt/2)*(np.pi/180))))
+    kd = np.sin(q*h*theta) / (q*np.sin(h*theta))
+
+    return abs(kd)
 
 
 def Einduzida(Nef, Bm, D, L, p, f):
@@ -73,9 +80,6 @@ def Einduzida(Nef, Bm, D, L, p, f):
     '''
     E = (2*Nef*Bm * np.pi * D* L * f) / (np.sqrt(2) * p)
     return  E
-
-def conteudoHarmonicoFase(kh, h):
-    return sum((kh[3:h]))
 
 def conteudoHarmonico(kh):
    return sum(kh)

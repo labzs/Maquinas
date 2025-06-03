@@ -22,18 +22,20 @@ def main():
 
     #Calcula o numero de ranhuras por polo e por fase 
     q = qRanhuras(nr, nf, p)
+    
     #Calcula numero de espiras eficaz
     Nef = nEficaz(nr, q)
 
 
     delt = passoRanhura(nr, p)
+    
     for h in range(1,18):
 
         #Calcula fator de encurtamento, distribuição e atenuação
         kc = fatorEncurtamento(delt, h)
         kd = fatorDistribuicao(q, delt, h)
         ke = kd* kc
-
+    
         #Calcula tensão eficaz não atenuada
 
         Eh0 = Einduzida(Nef, Bm, D, L, p, f)
@@ -52,13 +54,14 @@ def main():
         data['kh'].append(kh)
 
     df = pd.DataFrame(data)
-    subdfF = df[(df['h'] > 3) & (df['h'] % 2 != 0)].copy()
+    subdfF = df[(df['h'] > 2) & (df['h'] % 2 != 0)].copy()
     subdfL = subdfF[subdfF['h'] % 3 != 0].copy()
 
     somaKhF = conteudoHarmonico(subdfF['kh'])
     somaKhL = conteudoHarmonico(subdfL['kh']) 
     print("Vh de fase:", somaKhF)
     print("Vh de Linha:", somaKhL)
+   
     print(subdfF)
 
 
