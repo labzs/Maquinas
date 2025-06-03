@@ -1,0 +1,82 @@
+import numpy as np
+
+
+def ns(f, p):
+    '''
+    Retorna rotação síncrona em rpm
+    @param: 
+    f: frequência [Hz]
+    p: pares de polos.
+    '''
+    return (60*f)/p
+
+def passoPolar(p):
+    '''
+    passoPolar(p)
+    Retorna passo polar em graus geométricos.
+    '''
+    return 360/(2*p)
+
+def passoRanhura(nr,p):
+    '''
+    
+    passoRanhura(nr,p)
+    retorna o Passo de ranhura em graus elétricos.
+    @param:
+    nr: número total de ranhuras.
+    p: pares de polos.
+    '''
+    return 360 *p /(nr)
+
+def qRanhuras(nr, nf, p):
+    '''
+    qRanhuras(nr, nf)
+    Retorna o número de ranhuras por polo e fase
+    @param:
+    nr: número total de ranhuras.
+    nf: número de fases.
+    p: pares de polos.
+    '''
+    return nr /(nf * 2*p)
+
+def nEficaz(nr, q):
+    '''
+    Retorna o número eficaz de espiras sem encurtamento e sem distribuição.
+    '''
+    return nr/ q
+
+
+def fatorEncurtamento(delt, h):
+    '''
+    Retorna o fator de encurtamento para um encurtamento delta na harmônica h.
+
+    '''
+    return abs(np.cos((delt/2)*(np.pi/180)))
+
+def fatorDistribuicao(q, delt,h):
+    '''
+    Retorna o fator de Distribuição para uma distribuição de q por polo e fase e encurtamento del na harmônica h
+    '''
+
+    return abs((np.sin(q*h*(delt/2)*(np.pi/180))) / (q*np.sin(h*(delt/2)*(np.pi/180))))
+
+
+def Einduzida(Nef, Bm, D, L, p, f):
+    '''
+    Retorna a tensão induzida eficaz por fase sem encurtamento e sem distribuição.
+    @param:
+    Nef: Número eficaz de espiras 
+    Bm: Densidade de fluxo máximo no entreferro.
+    D: Diâmetro da máquina.
+    L: Altura da máquina.
+    p: Pares de polos.
+    '''
+    E = (2*Nef*Bm * np.pi * D* L * f) / (np.sqrt(2) * p)
+    return  E
+
+def conteudoHarmonicoFase(kh, h):
+    return sum((kh[3:h]))
+
+def conteudoHarmonico(kh):
+   return sum(kh)
+
